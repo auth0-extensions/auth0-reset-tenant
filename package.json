@@ -1,0 +1,21 @@
+{
+  "name": "auth0-tenant-reset",
+  "version": "1.0.0",
+  "description": "An Auth0 extension that will reset the current tenant to default artifacts",
+  "main": "index.js",
+  "repository": "https://github.com/auth0-extensions/auth0-tenant-reset",
+  "author": "twistedstream",
+  "license": "MIT",
+  "dependencies": {
+    "auth0": "^2.3.1",
+    "babel-preset-node6": "^11.0.0",
+    "babel-register": "^6.11.6",
+    "dotenv": "^2.0.0",
+    "request": "^2.74.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^6.1.2",
+    "eslint": "^3.3.1",
+    "eslint-plugin-import": "^1.13.0"
+  }
+}
