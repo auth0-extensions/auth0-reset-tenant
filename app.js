@@ -1,28 +1,7 @@
-import requestLib from 'request';
-import util from 'util';
+import * as request from './lib/request';
 import querystring from 'querystring';
 import fs from 'fs';
 import path from 'path';
-
-function wrapRequest (funcName, opts, successStatusCode, what) {
-  return new Promise((resolve, reject) => requestLib[funcName](opts, (err, response, body) => {
-    if (err) return reject(err);
-    if (response.statusCode === 404) return resolve();
-    if (response.statusCode !== successStatusCode) return reject(
-      new Error(`Unsuccessful response attempting to ${what}: status=${response.statusCode}, body=
-${typeof(body) === 'object' ? util.inspect(body) : body}`));
-
-    resolve(body);
-  }));
-}
-
-const request = {
-  get: (opts, what) => wrapRequest('get', opts, 200, what),
-  post: (opts, what) => wrapRequest('post', opts, 200, what),
-  del: (opts, what) => wrapRequest('del', opts, 204, what),
-  patch: (opts, what) => wrapRequest('patch', opts, 200, what),
-  put: (opts, what) => wrapRequest('put', opts, 200, what)
-};
 
 const fetchAccessToken = (auth0Domain, clientId, clientSecret, audience) => {
   return request.post({
