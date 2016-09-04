@@ -14,10 +14,10 @@ Promise.all([
     return Promise.all([
       // Delete all users
       deleteEntities(
-        apiManager('user', 'user_id', '/api/v2/users', v2AccessToken,
+        apiManager('User', 'user_id', '/api/v2/users', v2AccessToken,
           getPage => {
             const fetchEntities = (entities, page) => {
-              console.log(`[user page ${page}]`);
+              console.log(`Users: [page ${page}]`);
 
               return getPage({ per_page: 10, page })
                 .then(pageEntities => pageEntities.length === 0 ?
@@ -29,24 +29,24 @@ Promise.all([
           })),
       // Delete all clients except this one and the global client
       deleteEntities(
-        apiManager('client', 'client_id', '/api/v2/clients', v2AccessToken),
+        apiManager('Client', 'client_id', '/api/v2/clients', v2AccessToken),
         c => c.client_id !== process.env.API_CLIENT_ID && !c.global),
       // Delete all connections (should remove associated users)
       deleteEntities(
-        apiManager('connection', 'id', '/api/v2/connections', v2AccessToken)),
+        apiManager('Connection', 'id', '/api/v2/connections', v2AccessToken)),
       // Delete all rules
       deleteEntities(
-        apiManager('rule', 'id', '/api/v2/rules', v2AccessToken)),
+        apiManager('Rule', 'id', '/api/v2/rules', v2AccessToken)),
       // Delete all device credentials
       deleteEntities(
-        apiManager('device credential', 'id', '/api/v2/device-credentials', v2AccessToken)),
+        apiManager('Device Credential', 'id', '/api/v2/device-credentials', v2AccessToken)),
       // Delete all resource servers
       deleteEntities(
-        apiManager('resource server', 'id', '/api/v2/resource-servers', v2AccessToken),
+        apiManager('Resource Server', 'id', '/api/v2/resource-servers', v2AccessToken),
         r => !r.is_system),
       // Delete client grants not accociated with this client
       deleteEntities(
-        apiManager('client grant', 'id', '/api/v2/client-grants', v2AccessToken),
+        apiManager('Client Grant', 'id', '/api/v2/client-grants', v2AccessToken),
         g => g.client_id !== process.env.API_CLIENT_ID),
       // Delete the email provider
       request.del({
@@ -54,7 +54,7 @@ Promise.all([
         auth: { bearer: v2AccessToken },
         json: true
       }, 'delete email provider')
-        .then(() => console.log('Deleted email provider')),
+        .then(() => console.log('Custom Email Provider: deleted')),
       // Reset the tenant settings
       request.patch({
         url: `https://${process.env.AUTH0_DOMAIN}/api/v2/tenants/settings`,
@@ -80,7 +80,7 @@ Promise.all([
           allowed_logout_urls: []
         }
       }, 'reset tenant settings')
-        .then(() => console.log('Reset tenant settings')),
+        .then(() => console.log('Tenant Settings: reset')),
       // Reset login page
       request.patch({
         url: `https://${process.env.AUTH0_DOMAIN}/api/v2/clients/${process.env.GLOBAL_CLIENT_ID}`,
@@ -90,25 +90,25 @@ Promise.all([
           custom_login_page_on: false
         }
       }, 'reset custom login page')
-        .then(() => console.log('Reset custom login page')),
+        .then(() => console.log('Custom Login Page: reset')),
       // Reset email templates
-      resetEmailTemplate('verify_email', 'verification email', v1AccessToken, {
+      resetEmailTemplate('verify_email', 'Verification Email', v1AccessToken, {
         disabled: false,
         resultUrl: '',
         urlLifetimeInSeconds: 432000
       }),
-      resetEmailTemplate('welcome_email', 'welcome email', v1AccessToken, {
+      resetEmailTemplate('welcome_email', 'Welcome Email', v1AccessToken, {
         disabled: true
       }),
-      resetEmailTemplate('reset_email', 'change password email', v1AccessToken, {
+      resetEmailTemplate('reset_email', 'Change Password Email', v1AccessToken, {
         resultUrl: '',
         urlLifetimeInSeconds: 432000
       }),
-      resetEmailTemplate('blocked_account', 'blocked account email', v1AccessToken, {
+      resetEmailTemplate('blocked_account', 'Blocked Account Email', v1AccessToken, {
         resultUrl: '',
         urlLifetimeInSeconds: 432000
       }),
-      resetEmailTemplate('stolen_credentials', 'password breach alert email', v1AccessToken, {})
+      resetEmailTemplate('stolen_credentials', 'Password Breach Alert Email', v1AccessToken, {})
     ]);
   })
   .catch(err => {
