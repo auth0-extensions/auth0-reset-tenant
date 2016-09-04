@@ -1,6 +1,7 @@
 import { fetchAccessToken } from './lib/auth0';
 import reset from './recipes/reset';
 import regularWebApp from './recipes/regular_web_app';
+import newTenant from './recipes/new_tenant';
 
 Promise.all([
   fetchAccessToken(process.env.AUTH0_DOMAIN, process.env.GLOBAL_CLIENT_ID, process.env.GLOBAL_CLIENT_SECRET),
@@ -15,6 +16,7 @@ Promise.all([
 
     // run recipies
     return reset(accessTokens)
+      .then(newTenant)
       .then(regularWebApp);
 
   })
