@@ -22,6 +22,7 @@ In the desired Auth0 tenant, log into the Dashboard and:
     "read:client_grants",
     "delete:client_grants",
     "read:users",
+    "create:users",
     "delete:users",
     "read:clients",
     "delete:clients",
