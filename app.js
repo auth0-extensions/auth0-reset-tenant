@@ -1,7 +1,6 @@
 import * as request from './lib/request';
+import htmlTemplate from './templates';
 import querystring from 'querystring';
-import fs from 'fs';
-import path from 'path';
 
 const fetchAccessToken = (auth0Domain, clientId, clientSecret, audience) => {
   return request.post({
@@ -53,12 +52,6 @@ function apiManager (entityName, idField, apiPath, accessToken, pager = getPage 
       json: true
     }, `delete ${entityName}`)
   };
-}
-
-function htmlTemplate (name) {
-  return fs.readFileSync(
-    path.join(__dirname, 'templates', `${name}.html`),
-    'utf8');
 }
 
 function resetEmailTemplate (type, name, accessToken, settings) {
