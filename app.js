@@ -16,8 +16,11 @@ function selectRecipes (allRecipies) {
       output: process.stdout
     });
 
-    rl.question(`Type the recipe index to toggle or ${colors.green('r')} to run: `, (command) => {
+    rl.question(`Type the recipe index to toggle, ${colors.green('r')} to run, or ${colors.green('q')} to quit: `, (command) => {
       rl.close();
+
+      if (command.toLowerCase() === 'q')
+        return resolve();
 
       if (command.toLowerCase() === 'r')
         return resolve(allRecipies.filter(r => r.selected));
@@ -49,6 +52,9 @@ recipes()
   // prompt user to select which recipes to run
   .then(selectRecipes)
   .then(selectedRecipes => {
+    if (!selectedRecipes)
+      return console.log('Bye.');
+
     if (selectedRecipes.length === 0)
       return console.log(colors.yellow('No recipes to run.'));
 
