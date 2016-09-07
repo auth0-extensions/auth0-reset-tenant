@@ -2,7 +2,7 @@ import * as request from '../lib/request';
 import htmlTemplate from '../templates';
 import { deleteEntities, apiManager, resetEmailTemplate } from '../lib/auth0';
 
-export const name = 'Reset';
+export const name = 'Clear';
 export const description = 'Removes all entities from the tenant and puts settings back to their defaults';
 
 export const run = (accessTokens) => Promise.all([

@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-const DEFAULT_ID = 'reset';
+const DEFAULT_ID = 'clear';
 
 export default () => new Promise((resolve, reject) =>
   fs.readdir(__dirname, (err, files) => {
