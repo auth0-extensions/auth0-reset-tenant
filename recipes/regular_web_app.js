@@ -2,12 +2,12 @@ import { createEntity } from '../lib/auth0';
 
 const DB_CONNECTION_NAME = 'Sweet-App-Users';
 
-export default (accessTokens) => {
-  console.log('** Regular Web App **');
-  console.log('Creates a regular web app, connection, and single user');
+export const name = 'Regular Web App';
+export const description = 'Creates a regular web app that uses a database connection with a single user';
 
+export const run = (accessTokens) =>
   // Create a regular web application
-  return createEntity('Client', 'client_id', '/api/v2/clients', accessTokens.v2, {
+  createEntity('Client', 'client_id', '/api/v2/clients', accessTokens.v2, {
     name: 'My Sweet Web App',
     callbacks: [ 'http://localhost:3000/callback', 'http://jwt.io' ],
     app_type: 'regular_web'
@@ -32,7 +32,4 @@ export default (accessTokens) => {
           name: 'Foo Bar'
         }
       })
-    )
-    // return the access tokens to the next recipe
-    .then(() => accessTokens);
-};
+    );

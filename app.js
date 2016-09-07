@@ -1,25 +1,66 @@
-import { fetchAccessToken } from './lib/auth0';
-import reset from './recipes/reset';
-import regularWebApp from './recipes/regular_web_app';
-import newTenant from './recipes/new_tenant';
+import readline from 'readline';
+import colors from 'colors/safe';
+import pkg from './package';
+import recipes from './recipes';
+import runner from './lib/runner';
 
-Promise.all([
-  fetchAccessToken(process.env.AUTH0_DOMAIN, process.env.GLOBAL_CLIENT_ID, process.env.GLOBAL_CLIENT_SECRET),
-  fetchAccessToken(process.env.AUTH0_DOMAIN, process.env.API_CLIENT_ID, process.env.API_CLIENT_SECRET, `https://${process.env.AUTH0_DOMAIN}/api/v2/`)
-])
-  .then(tokens => {
-    const accessTokens = {
-      v1: tokens[0],
-      v2: tokens[1]
-    };
-    console.log('Access tokens obtained.');
+function selectRecipes (allRecipies) {
+  console.log('Recipes:');
+  allRecipies.forEach((recipe, index) => {
+    console.log(`${colors.green(index)}: [${recipe.selected ? colors.green('x') : ' '}] ${colors.green(recipe.name)}: ${recipe.description}`);
+  });
 
-    // run recipies
-    return reset(accessTokens)
-      .then(newTenant)
-      .then(regularWebApp);
+  return new Promise((resolve) => {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout
+    });
 
+    rl.question(`Type the recipe index to toggle or ${colors.green('r')} to run: `, (command) => {
+      rl.close();
+
+      if (command.toLowerCase() === 'r')
+        return resolve(allRecipies.filter(r => r.selected));
+
+      const recipe = allRecipies[command];
+      if (recipe) {
+        recipe.selected = !recipe.selected;
+      } else {
+        console.log(colors.yellow('Unsupported command or invalid recipe index!'));
+      }
+      return resolve(selectRecipes(allRecipies));
+    });
+  });
+}
+
+// command line program:
+
+console.log(`${colors.cyan(pkg.name)}, version ${pkg.version}`);
+console.log(pkg.description);
+console.log();
+
+recipes()
+  .then(allRecipies => {
+    // default the first recipe (the reset) to selected
+    allRecipies[0].selected = true;
+
+    return allRecipies;
   })
-  .catch(err => {
-    console.error('ERROR:', err);
+  // prompt user to select which recipes to run
+  .then(selectRecipes)
+  .then(selectedRecipes => {
+    if (selectedRecipes.length === 0)
+      return console.log(colors.yellow('No recipes to run.'));
+
+    // run selected recipes
+    const recipeNames = selectedRecipes.reduce((p, c) =>
+      p + (p.length > 0 ? ', ' : '') + colors.green(c.name),
+      '');
+    console.log(`Running recipe(s): ${recipeNames}...`);
+    console.log();
+    return runner(selectedRecipes)
+      .then(() => {
+        console.log();
+        console.log('Recipe run complete!');
+      });
   });
