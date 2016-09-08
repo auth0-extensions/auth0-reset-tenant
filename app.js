@@ -69,4 +69,6 @@ recipes()
         console.log();
         console.log('Recipe run complete!');
       });
-  });
+  })
+  .catch((err) => console.error(colors.red('ERROR:', err)));
+  

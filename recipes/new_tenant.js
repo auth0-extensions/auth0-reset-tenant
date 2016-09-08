@@ -16,6 +16,6 @@ export const run = (accessTokens) =>
       createEntity('Connection', 'id', '/api/v2/connections', accessTokens.v2, {
         name: DB_CONNECTION_NAME,
         strategy: 'auth0',
-        enabled_clients: [ client.client_id, process.env.API_CLIENT_ID ]
+        enabled_clients: [ client.client_id ]
       })
     );
