@@ -1,5 +1,5 @@
 import * as request from '../lib/request';
-import htmlTemplate from '../templates';
+import htmlTemplate from '../lib/templates';
 import { deleteEntities, apiManager, resetEmailTemplate } from '../lib/auth0';
 
 export const name = 'Clear';

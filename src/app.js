@@ -1,6 +1,6 @@
 import readline from 'readline';
 import colors from 'colors/safe';
-import pkg from './package';
+import pkg from '../package';
 import recipes from './recipes';
 import runner from './lib/runner';
 
@@ -71,4 +71,3 @@ recipes()
       });
   })
   .catch((err) => console.error(colors.red('ERROR:', err)));
-  
