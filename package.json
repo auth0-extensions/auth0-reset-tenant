@@ -1,17 +1,17 @@
 {
-  "name": "auth0-tenant-reset",
+  "name": "auth0-reset-tenant",
   "version": "1.0.0",
   "description": "An Auth0 CLI tool/extension that can be used to reset an Auth0 tenant to a known set of artifacts.",
   "scripts": {
     "clean": "rimraf dist",
     "build": "npm run clean && babel src -d dist",
-    "start": "./bin/tenant-reset",
+    "start": "./bin/reset-tenant",
     "install": "npm run build"
   },
   "bin": {
-    "tenant-reset": "./bin/tenant-reset"
+    "reset-tenant": "./bin/reset-tenant"
   },
-  "repository": "https://github.com/auth0-extensions/auth0-tenant-reset",
+  "repository": "https://github.com/auth0-extensions/auth0-reset-tenant",
   "author": "twistedstream",
   "license": "MIT",
   "dependencies": {
