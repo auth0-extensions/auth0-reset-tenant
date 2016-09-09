@@ -1,5 +1,4 @@
-import dotenv from 'dotenv';
-dotenv.config();
+import { envFile } from './lib/env';
 import readline from 'readline';
 import colors from 'colors/safe';
 import pkg from '../package';
@@ -42,6 +41,7 @@ function selectRecipes (allRecipies) {
 
 console.log(`${colors.cyan(pkg.name)}, version ${pkg.version}`);
 console.log(pkg.description);
+console.log(`[.env file: ${envFile}]`);
 console.log();
 
 recipes()
