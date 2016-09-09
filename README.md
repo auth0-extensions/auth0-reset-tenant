@@ -8,10 +8,9 @@ This is not an extension yet, so to run it locally do the following:
 
 ### Prerequisites
 
-1. Install Node v6  
-  Example:
+1. Install the version of Node this script is compatible with using `nvm`:  
   ```bash
-  nvm install 6
+  nvm
   ```
 
 ### Auth0 Setup
@@ -79,7 +78,7 @@ If you want to run the script from the repo directory (eg. you are developing a 
 
 1. Create a `.env` file in the repo directory, and configure it the same as the `.tenant-reset-env` file in [Global Setup](#global-setup)
 
-1. Install dependencies, which also performs a build (see [Local Development](#local-development) section):  
+1. Install dependencies, which also performs a build (see [Build](#build)):  
 ```bash
 npm install
 ```
@@ -91,6 +90,8 @@ npm start
 
 ### Local Development
 
+#### Build
+
 This script uses the [Babel.js](https://babeljs.io/) transpiler so it can take advantage of ECMA6 language features. Therefore the ECMA6 code in the [`src` directory](./src) needs to be compiled by Babel into JavaScript that Node.js can run. This is done by:
 
 ```bash
@@ -98,3 +99,11 @@ npm run build
 ```
 
 Which creates a `dist` directory containing the compiled code, where `dist/index.js` is the starting point for the application. This is what the [`bin/tenant-reset` binary](bin/tenant-reset) and `npm start` are configured to run.
+
+#### Node Version
+
+This project contains an [`.nvmrc` file](./.nvmrc), which will set your current version of Node to the one that Auth0 webtasks/extensions are compatible with, if you run this command:
+
+```bash
+nvm use
+```

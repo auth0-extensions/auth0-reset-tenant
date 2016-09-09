@@ -1,6 +1,6 @@
 {
   "ignore": "/node_modules/",
   "presets": [
-    "node6"
+    "es2015"
   ]
 }

@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import { envFile } from './lib/env';
 import readline from 'readline';
 import colors from 'colors/safe';
