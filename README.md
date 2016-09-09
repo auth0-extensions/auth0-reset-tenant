@@ -6,13 +6,6 @@ An Auth0 CLI tool/extension that can be used to reset an Auth0 tenant to a known
 
 This is not an extension yet, so to run it locally do the following:
 
-### Prerequisites
-
-1. Install the version of Node this script is compatible with using `nvm`:  
-  ```bash
-  nvm
-  ```
-
 ### Auth0 Setup
 
 In the desired target Auth0 tenant, log into the Dashboard and:
