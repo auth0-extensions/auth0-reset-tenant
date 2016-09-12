@@ -42,6 +42,7 @@ function selectRecipes (allRecipies) {
 
 console.log(`${colors.cyan(pkg.name)}, version ${pkg.version}`);
 console.log(pkg.description);
+console.log(`Target Auth0 domain: ${colors.yellow(process.env.AUTH0_DOMAIN)}`);
 console.log(`[.env file: ${envFile}]`);
 console.log();
 
