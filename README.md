@@ -21,7 +21,7 @@ In the desired target Auth0 tenant, log into the [Auth0 Dashboard](https://manag
 
 1. Authorize the your client for the Auth0 Management API with this cURL call:  
   ```bash
-  curl "https://endofline.auth0.com/api/v2/client-grants" \
+  curl "https://$AUTH0_DOMAIN/api/v2/client-grants" \
     -X POST -H "Content-Type: application/json" \
     -H "Authorization: Bearer $APIV2_ACCESS_TOKEN" \
     -d '{
