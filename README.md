@@ -43,6 +43,7 @@ In the desired target Auth0 tenant, log into the [Auth0 Dashboard](https://manag
             "create:connections",
             "read:resource_servers",
             "delete:resource_servers",
+            "create:resource_servers",
             "read:device_credentials",
             "delete:device_credentials",
             "read:rules",
