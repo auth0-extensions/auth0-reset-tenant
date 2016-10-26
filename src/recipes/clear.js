@@ -65,13 +65,15 @@ export const run = (accessTokens) => Promise.all([
       flags: {
         change_pwd_flow_v1: false,
         enable_client_connections: true,
-        enable_apis_section: true
+        enable_apis_section: true,
+        enable_pipeline2: false
       },
       friendly_name: '',
       picture_url: '',
       support_email: '',
       support_url: '',
-      allowed_logout_urls: []
+      allowed_logout_urls: [],
+      default_audience: ''
     }
   }, 'reset tenant settings')
     .then(() => console.log('Tenant Settings: reset')),
