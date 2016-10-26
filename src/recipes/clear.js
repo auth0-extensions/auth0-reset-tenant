@@ -35,9 +35,9 @@ export const run = (accessTokens) => Promise.all([
   // Delete all device credentials
   auth0.deleteEntities(
     auth0.apiManager('Device Credential', 'id', '/api/v2/device-credentials', accessTokens.v2)),
-  // Delete all resource servers
+  // Delete all APIs
   auth0.deleteEntities(
-    auth0.apiManager('Resource Server', 'id', '/api/v2/resource-servers', accessTokens.v2),
+    auth0.apiManager('API', 'id', '/api/v2/resource-servers', accessTokens.v2),
     r => !r.is_system),
   // Delete client grants not accociated with this client
   auth0.deleteEntities(
