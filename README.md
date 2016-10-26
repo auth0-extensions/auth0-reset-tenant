@@ -67,7 +67,10 @@ If you want to be able to run the script from _any_ directory on your machine:
   GLOBAL_CLIENT_SECRET=global-client-secret
   API_CLIENT_ID=non-interactive-client-id
   API_CLIENT_SECRET=non-interactive-client-secret
+  WEBTASK_TOKEN=your-tenant-webtask-token
   ```
+
+  > `WEBTASK_TOKEN` is optional. Include it if you want the script to have access to your tenant's webtasks and extensions. To obtain the token, go to the desired tenant in the Auth0 Dashboard, then to Account Settings > [Webtasks](https://manage.auth0.com/#/account/webtasks) and copy it from the **Setup wt** step.
 
 1. To install the script globally, directly from this GitHub repo:  
   ```bash

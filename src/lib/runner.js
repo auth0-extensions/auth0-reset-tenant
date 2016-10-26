@@ -8,7 +8,8 @@ export default (recipes, errorHandler) =>
     .then(tokens => {
       const accessTokens = {
         v1: tokens[0],
-        v2: tokens[1]
+        v2: tokens[1],
+        webtask: process.env.WEBTASK_TOKEN
       };
       console.log('Access tokens obtained.');
 
