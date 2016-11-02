@@ -74,7 +74,8 @@ export const run = (accessTokens) => Promise.all([
       support_email: '',
       support_url: '',
       allowed_logout_urls: [],
-      default_audience: ''
+      default_audience: '',
+      default_directory: ''
     }
   }, 'reset tenant settings')
     .then(() => console.log('Tenant Settings: reset')),
