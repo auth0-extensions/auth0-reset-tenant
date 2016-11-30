@@ -1,6 +1,6 @@
 {
   "name": "auth0-reset-tenant",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "An Auth0 CLI tool/extension that can be used to reset an Auth0 tenant to a known set of artifacts.",
   "scripts": {
     "clean": "rimraf dist",

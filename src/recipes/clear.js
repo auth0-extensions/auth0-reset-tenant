@@ -57,7 +57,11 @@ export const run = (accessTokens) => Promise.all([
     json: {
       change_password: {
         enabled: false,
-        html: htmlTemplate('change_password')
+        html: htmlTemplate('hosted', 'password_reset')
+      },
+      guardian_mfa_page: {
+        enabled: false,
+        html: htmlTemplate('hosted', 'guardian_mutlifactor')
       },
       error_page: {
         show_log_link: false,
@@ -84,7 +88,7 @@ export const run = (accessTokens) => Promise.all([
     url: `https://${process.env.AUTH0_DOMAIN}/api/v2/clients/${process.env.GLOBAL_CLIENT_ID}`,
     auth: { bearer: accessTokens.v2 },
     json: {
-      custom_login_page: htmlTemplate('login'),
+      custom_login_page: htmlTemplate('hosted', 'login'),
       custom_login_page_on: false
     }
   }, 'reset custom login page')

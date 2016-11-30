@@ -76,7 +76,7 @@ export function resetEmailTemplate (type, name, accessToken, settings) {
             tenant: process.env.AUTH0_TENANT,
             from: '',
             subject: '',
-            body: htmlTemplate(type),
+            body: htmlTemplate('email', type),
             syntax: 'liquid'
           }, settings)
         },
