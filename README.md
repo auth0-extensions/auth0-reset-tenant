@@ -47,6 +47,7 @@ In the desired target Auth0 tenant, log into the [Auth0 Dashboard](https://manag
             "read:device_credentials",
             "delete:device_credentials",
             "read:rules",
+            "create:rules",
             "delete:rules",
             "delete:email_provider",
             "update:tenant_settings"
