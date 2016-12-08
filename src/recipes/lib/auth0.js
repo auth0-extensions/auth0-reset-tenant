@@ -1,6 +1,6 @@
 import * as request from './request';
 import querystring from 'querystring';
-import htmlTemplate from '../lib/templates';
+import htmlTemplate from './templates';
 
 export function fetchAccessToken (auth0Domain, clientId, clientSecret, audience) {
   return request.post({
