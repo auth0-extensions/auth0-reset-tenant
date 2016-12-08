@@ -1,4 +1,4 @@
-import { createEntity } from '../lib/auth0';
+import { createEntity } from '../../lib/auth0';
 
 export const name = 'New Tenant';
 export const description = 'Creates all the elements in a new Auth0 Tenant';

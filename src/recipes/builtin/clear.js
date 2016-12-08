@@ -1,7 +1,7 @@
-import * as request from '../lib/request';
-import htmlTemplate from '../lib/templates';
-import * as auth0 from '../lib/auth0';
-import * as webtask from '../lib/webtask';
+import * as request from '../../lib/request';
+import htmlTemplate from '../../lib/templates';
+import * as auth0 from '../../lib/auth0';
+import * as webtask from '../../lib/webtask';
 
 export const name = 'Clear';
 export const description = 'Removes all entities from the tenant (including webtasks/extensions) and puts settings back to their defaults';

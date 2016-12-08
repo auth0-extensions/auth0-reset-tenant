@@ -1,4 +1,4 @@
-import { createEntity, updateEntity } from '../lib/auth0';
+import { createEntity, updateEntity } from '../../lib/auth0';
 
 const DB_CONNECTION_NAME = 'Username-Password-Authentication';
 

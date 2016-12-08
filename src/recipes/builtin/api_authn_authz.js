@@ -1,5 +1,5 @@
-import { createEntity, updateEntity } from '../lib/auth0';
-import * as request from '../lib/request';
+import { createEntity, updateEntity } from '../../lib/auth0';
+import * as request from '../../lib/request';
 
 const DB_CONNECTION_NAME = 'Task-Users';
 

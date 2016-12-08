@@ -4,10 +4,8 @@ import readline from 'readline';
 import colors from 'colors/safe';
 import pkg from '../package';
 import recipes from './recipes';
+import { externalFiles } from './recipes/strategies';
 import runner from './lib/runner';
-import { exec } from 'child_process';
-import path from 'path'; 
-import { rmdir, mkdir, cp, ls } from './lib/fs';
 
 function selectRecipes (allRecipies) {
   console.log('Recipes:');
@@ -44,66 +42,19 @@ function selectRecipes (allRecipies) {
 // command line program:
 
 const commandLineArgs = process.argv.slice(2);
+const strategies = [];
 
 console.log(`${colors.cyan(pkg.name)}, version ${pkg.version}`);
 console.log(pkg.description);
 console.log(`Target Auth0 domain: ${colors.yellow(process.env.AUTH0_DOMAIN)}`);
 console.log(`[.env file: ${envFile}]`);
-console.log(`[command line args: ${commandLineArgs.length > 0 ? commandLineArgs : '(none)'}]`);
 console.log();
 
-const tempDir = path.join(__dirname, '_temp');
-const tempSourceDir = path.join(tempDir, 'src');
-const tempOutDir = path.join(tempDir, 'out');
-
-function resetTempDirs () {
-  return rmdir(tempDir).then(mkdir)
-    .then(() => mkdir(tempSourceDir))
-    .then(() => mkdir(tempOutDir));
+if (commandLineArgs.length > 0) {
+  strategies.push(externalFiles(commandLineArgs));
 }
 
-const commandLineImportStrategy = () => {
-  if (commandLineArgs.length === 0)
-    return Promise.resolve([]);
-
-  console.log('Importing external recipe files...');
-
-  // reset temp directories
-  return resetTempDirs()
-    // copy all external recipe files specified in the command line to the internal temp source dir
-    .then(() =>
-      Promise.all(commandLineArgs.map(arg => {
-        const importedSourceFile = path.join(tempSourceDir, path.basename(arg));
-
-        return cp(arg, importedSourceFile);
-      })))
-    // compile them using babel
-    .then(() => {
-      const babel = path.join(__dirname, '../node_modules/.bin/babel');
-      const command =`${babel} '${tempSourceDir}' -d '${tempOutDir}'`;
-
-      return new Promise((resolve, reject) => 
-        exec(command, (err, { cwd: tempSourceDir }, stdout, stderr) => {
-          if (stdout)
-            console.log('stdout:', stdout);
-          if (stderr)
-            console.error('stderr:', stderr);
-
-          if (err) return reject(err);
-          resolve();
-        }));
-    })
-    // import them
-    .then(() => ls(tempOutDir)
-      .then(files => files.map(file => Object.assign(
-        {
-          id: '_imported_' + /^(.*)\.js$/.exec(file)[1],
-          selected: true
-        }, 
-        require(path.join(tempOutDir, file))))));
-};
-
-recipes([ commandLineImportStrategy ])
+recipes(strategies)
   .then(allRecipies => {
     // default the first recipe (the reset) to selected
     allRecipies[0].selected = true;

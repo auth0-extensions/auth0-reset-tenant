@@ -1,30 +1,15 @@
-import fs from 'fs';
-import path from 'path';
+import builtin from './builtin';
 
 const DEFAULT_ID = 'clear';
 
-const currentDirectoryStrategy = () => 
-  new Promise((resolve, reject) =>
-    fs.readdir(__dirname, (err, files) => {
-      if (err) return reject(err);
-
-      const recipes = files
-        .filter(f => f.endsWith('.js') && f !== 'index.js')
-        .map(f => Object.assign(
-          { id: /^(.*)\.js$/.exec(f)[1] },
-          require(path.join(__dirname, f))));
-
-      resolve(recipes);
-    }));
-
 export default strategies => {
-  // add current directory strategy to passed list
-  strategies = strategies || [];
-  strategies.push(currentDirectoryStrategy);
+  // add built-in recipe strategy
+  strategies.push(builtin);
 
-  // run strategies
-  return Promise.all(strategies.map(s => s()))
+  // run all strategies - each will return an array of recipes
+  return Promise.all(strategies.map(strategy => strategy()))
     .then(results => {
+      // flatten array of arrays of recipes
       const all = results.reduce((p, c) => p.concat(c), []);
 
       // return all recipes with the default recipe always first
