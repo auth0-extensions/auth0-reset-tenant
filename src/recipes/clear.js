@@ -111,8 +111,11 @@ export const run = (accessTokens) => Promise.all([
     urlLifetimeInSeconds: 432000
   }),
   auth0.resetEmailTemplate('stolen_credentials', 'Password Breach Alert Email', accessTokens.v1, {}),
-  // Delete all webtasks
+  // Delete all webtasks and CRON jobs
   accessTokens.webtask ?
-    webtask.deleteEntities(webtask.apiManager(accessTokens.webtask)) :
-    Promise.resolve()
+    Promise.all([
+      webtask.deleteEntities(webtask.apiManager('Webtask', 'name', '/api/webtask', accessTokens.webtask)),
+      webtask.deleteEntities(webtask.apiManager('Webtask CRON', 'name', '/api/cron', accessTokens.webtask))
+    ])
+    : Promise.resolve()
 ]);

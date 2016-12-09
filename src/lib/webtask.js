@@ -1,25 +1,27 @@
 import * as request from './request';
 import querystring from 'querystring';
 
-const rootUrl = `https://sandbox.it.auth0.com/api/webtask/${process.env.AUTH0_TENANT}`;
+export function apiManager (entityName, idField, apiPath, accessToken, pager = getPage => getPage({})) {
+  const regionMatch = /^\S*\.(\S*)\.auth0\.com$/.exec(process.env.AUTH0_DOMAIN);
+  const region = regionMatch ? `-${regionMatch[1]}` : '';
+  const rootUrl = `https://sandbox${region}.it.auth0.com${apiPath}/${process.env.AUTH0_TENANT}`;
 
-export function apiManager (accessToken, pager = getPage => getPage({})) {
   return {
-    entityName: 'Webtask',
-    idField: 'name',
+    entityName,
+    idField,
     getAll: () => {
       const getPage = (params) => request.get({
         url: `${rootUrl}?${querystring.stringify(params)}`,
         auth: { bearer: accessToken },
         json: true
-      }, 'fetch webtasks');
+      }, `fetch ${entityName}s`);
       return pager(getPage);
     },
     delete: id => request.del({
       url: `${rootUrl}/${id}`,
       auth: { bearer: accessToken },
       json: true
-    }, 'delete webtask')
+    }, `delete ${entityName}`)
   };
 }
 
