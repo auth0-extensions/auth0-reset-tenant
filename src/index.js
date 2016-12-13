@@ -4,6 +4,8 @@ import readline from 'readline';
 import colors from 'colors/safe';
 import pkg from '../package';
 import recipes from './recipes';
+import { externalFiles } from './recipes/strategies';
+import builtinStrategy from './recipes/builtin';
 import runner from './lib/runner';
 
 function selectRecipes (allRecipies) {
@@ -40,16 +42,25 @@ function selectRecipes (allRecipies) {
 
 // command line program:
 
+const commandLineArgs = process.argv.slice(2);
+
 console.log(`${colors.cyan(pkg.name)}, version ${pkg.version}`);
 console.log(pkg.description);
 console.log(`Target Auth0 domain: ${colors.yellow(process.env.AUTH0_DOMAIN)}`);
 console.log(`[.env file: ${envFile}]`);
 console.log();
 
-recipes()
+// build strategies
+const strategies = [ builtinStrategy ];
+if (commandLineArgs.length > 0) {
+  strategies.push(externalFiles(commandLineArgs));
+}
+
+recipes(strategies)
   .then(allRecipies => {
-    // default the first recipe (the reset) to selected
-    allRecipies[0].selected = true;
+    // if no external recipes were provided, default the first recipe (the reset) to selected
+    if (commandLineArgs.length === 0)
+      allRecipies[0].selected = true;
 
     return allRecipies;
   })

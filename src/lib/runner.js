@@ -1,4 +1,4 @@
-import { fetchAccessToken } from './auth0';
+import { fetchAccessToken } from '../recipes/lib/auth0';
 
 export default (recipes, errorHandler) =>
   Promise.all([

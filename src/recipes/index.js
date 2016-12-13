@@ -1,21 +1,14 @@
-import fs from 'fs';
-import path from 'path';
-
 const DEFAULT_ID = 'clear';
 
-export default () => new Promise((resolve, reject) =>
-  fs.readdir(__dirname, (err, files) => {
-    if (err) return reject(err);
+// obtain all recipes by running all strategies
+export default strategies => 
+  Promise.all(strategies.map(strategy => strategy()))
+    .then(results => {
+      // flatten array of arrays of recipes
+      const all = results.reduce((p, c) => p.concat(c), []);
 
-    const all = files
-      .filter(f => f.endsWith('.js') && f !== 'index.js')
-      .map(f => Object.assign(
-        { id: /^(.*)\.js$/.exec(f)[1] },
-        require(path.join(__dirname, f))));
-
-    // return array with the default recipe always first
-    const defaultRecipe = all.find(r => r.id === DEFAULT_ID);
-    const otherRecipes = all.filter(r => r.id !== DEFAULT_ID);
-    return resolve([ defaultRecipe ].concat(otherRecipes));
-  })
-);
+      // return all recipes with the default recipe always first
+      const defaultRecipe = all.find(r => r.id === DEFAULT_ID);
+      const otherRecipes = all.filter(r => r.id !== DEFAULT_ID);
+      return [ defaultRecipe ].concat(otherRecipes);
+    });
