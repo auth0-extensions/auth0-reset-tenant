@@ -85,4 +85,8 @@ recipes(strategies)
         console.log('Recipe run complete!');
       });
   })
-  .catch((err) => console.error(colors.red('ERROR:', err)));
+  .catch((err) => { 
+    console.error(colors.red('ERROR:', err));
+    if (err.stack)
+      console.error(colors.red(err.stack));
+  });

@@ -29,6 +29,8 @@ In the desired target Auth0 tenant, log into the [Auth0 Dashboard](https://manag
           "audience": "https://'$AUTH0_DOMAIN'/api/v2/",
           "scope": [
             "read:client_grants",
+            "update:client_grants",
+            "create:client_grants",
             "delete:client_grants",
             "read:users",
             "create:users",
