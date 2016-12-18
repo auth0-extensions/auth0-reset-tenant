@@ -1,9 +1,9 @@
-import { fetchAccessToken } from '../recipes/lib/auth0';
+import { tokenAudience, fetchAccessToken } from '../recipes/lib/auth0';
 
 export default (recipes, errorHandler) =>
   Promise.all([
     fetchAccessToken(process.env.AUTH0_DOMAIN, process.env.GLOBAL_CLIENT_ID, process.env.GLOBAL_CLIENT_SECRET),
-    fetchAccessToken(process.env.AUTH0_DOMAIN, process.env.API_CLIENT_ID, process.env.API_CLIENT_SECRET, `https://${process.env.AUTH0_DOMAIN}/api/v2/`)
+    fetchAccessToken(process.env.AUTH0_DOMAIN, process.env.API_CLIENT_ID, process.env.API_CLIENT_SECRET, tokenAudience())
   ])
     .then(tokens => {
       const accessTokens = {
