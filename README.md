@@ -72,6 +72,7 @@ If you want to be able to run the script from _any_ directory on your machine:
   API_CLIENT_ID=non-interactive-client-id
   API_CLIENT_SECRET=non-interactive-client-secret
   WEBTASK_TOKEN=your-tenant-webtask-token
+  AUTHZ_EXTENSION_ID=adf6e2f2b84784b57522e3b19dfc9201
   ```
 
   > `WEBTASK_TOKEN` is optional. Include it if you want the script to have access to your tenant's webtasks and extensions. To obtain the token, go to the desired tenant in the Auth0 Dashboard, then to Account Settings > [Webtasks](https://manage.auth0.com/#/account/webtasks) and copy it from the **Setup wt** step.

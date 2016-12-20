@@ -8,7 +8,7 @@ const REQUIRED_ACCESS_TOKEN_SCOPES = [
 ];
 
 export function apiBaseUrl () {
-  return `https://${process.env.AUTH0_TENANT}.${webtaskRegion()}.webtask.io/adf6e2f2b84784b57522e3b19dfc9201/api`;
+  return `https://${process.env.AUTH0_TENANT}.${webtaskRegion()}.webtask.io/${process.env.AUTHZ_EXTENSION_ID}/api`;
 }
 
 export function tokenAudience () {
