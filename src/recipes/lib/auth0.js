@@ -2,6 +2,14 @@ import * as request from './request';
 import querystring from 'querystring';
 import htmlTemplate from './templates';
 
+export function domain () {
+  return process.env.AUTH0_DOMAIN;
+}
+
+export function tokenAudience () {
+  return `https://${process.env.AUTH0_DOMAIN}/api/v2/`;
+}
+
 export function fetchAccessToken (auth0Domain, clientId, clientSecret, audience) {
   return request.post({
     url: `https://${auth0Domain}/oauth/token`,

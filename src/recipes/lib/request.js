@@ -17,8 +17,8 @@ ${typeof(body) === 'object' ? util.inspect(body) : body}`));
   }));
 }
 
-export const get =   (opts, what) => wrapRequest('get', opts, 200, what);
-export const post =  (opts, what) => wrapRequest('post', opts, [ 200, 201 ], what);
-export const del =   (opts, what) => wrapRequest('del', opts, 204, what);
-export const patch = (opts, what) => wrapRequest('patch', opts, 200, what);
-export const put =   (opts, what) => wrapRequest('put', opts, 200, what);
+export const get =   (opts, what, status = 200) => wrapRequest('get', opts, status, what);
+export const post =  (opts, what, status = [ 200, 201 ]) => wrapRequest('post', opts, status, what);
+export const del =   (opts, what, status = 204) => wrapRequest('del', opts, status, what);
+export const patch = (opts, what, status = 200) => wrapRequest('patch', opts, status, what);
+export const put =   (opts, what, status = 200) => wrapRequest('put', opts, status, what);
