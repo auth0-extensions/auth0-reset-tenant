@@ -96,3 +96,37 @@ This project contains an [`.nvmrc` file](./.nvmrc), which will set your current 
 ```bash
 nvm use
 ```
+
+## Building your own Recipes
+
+It can be very useful to craft your own recipe scripts for use with your projects that use Auth0. You can then include these receipes along with your other source code so they make an easy way to configure a tenant from scratch so it works with your application code in a repeatable fashion.
+
+To create your own receipe, simply create a `.js` file in ECMA6 syntax with the following exports:
+
+```js
+export const name = 'Friendly name of your recipe';
+export const description = 'A description of what it does';
+// an array of Auth0 Management API scopes that are required by your recipe to run
+export const managementApiClientGrantScopes = [ 
+  'create:clients',
+  'create:connections'
+];
+
+export const run = accessTokens => {
+   // your receipe code here, which ultimately must return a promise
+};
+```
+
+The `accessTokens` argument contains an object with all the API access tokens you'll need to run your recipe, which include:
+
+* `accessTokens.v2`: An Auth0 Management API access token with at least the scopes you specified in the `managementApiClientGrantScopes` export
+* `accessTokens.v1`: An Auth0 Management API v1 access token for the handful of operations you might need to do there
+* `accessTokens.webtask`: The webtask token you specified in `RESETTENANT_AUTHZ_EXTENSION_ID` setting of your configuration file (if it was provided)
+
+You can then run your custom recipe like this:
+
+```bash
+reset-tenant ./your-recipe.js
+```
+
+For examples of recipes, take a look at the [/src/recipes/builtin](/src/recipes/builtin) directory.
