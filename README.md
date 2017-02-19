@@ -1,6 +1,8 @@
 # Auth0 Reset Tenant Extension
 
-An Auth0 CLI tool/extension that can be used to reset an Auth0 tenant to a known set of artifacts, which is useful for demos and setting up quick test environments.
+An Auth0 CLI tool/extension that can be used to reset an Auth0 tenant to a known set of entities (clients, connections, users, etc), which is useful for demos and setting up quick test environments.
+
+The `reset-tenant` script loads up a set of pre-built **recipes** (or you can provide your own custom recipe) that you can execute against a specified Auth0 tenant. Often times this involves first deleting all of the entities within that tenant and rebuilding it with the set of entities defined in the recipes.
 
 ## Setup
 
@@ -8,106 +10,72 @@ This is not an extension yet, but you can run it locally as a CLI. Here's how:
 
 ### Auth0 Setup
 
-In the desired target Auth0 tenant, log into the [Auth0 Dashboard](https://manage.auth0.com) and:
+For a tenant to be used by the script, you must first log into the [Auth0 Dashboard](https://manage.auth0.com) and:
 
-1. Create a new **Non Interactive Client** that will represent this script (eg. `Tenant Reset Script`)
-1. Go to the [Management API Explorer](https://auth0.com/docs/api/management/v2) and use the **TOKEN GENERATOR** to create an API access token that has the `create:client_grants` scope
-1. In a command terminal, create the following variables to be used in the next step:  
-  ```bash
-  APIV2_ACCESS_TOKEN=access-token-from-previous-step
-  CLIENT_ID=non-interactive-client-id
-  AUTH0_DOMAIN=yourtenant.auth0.com
-  ```
+1. Create a new **Non Interactive Client** that will represent this script. Name it something like: `auth0-reset-tenant`
+1. Authorize the client for the **Auth0 Management API** and enable the `read:client_grants` and `update:client_grants` scopes
+1. You will also need to obtain your Global Client ID and Secret from the [Account Settings > Advanced tab](https://manage.auth0.com/#/account/advanced)
 
-1. Authorize the your client for the Auth0 Management API with this cURL call:  
-  ```bash
-  curl "https://$AUTH0_DOMAIN/api/v2/client-grants" \
-    -X POST -H "Content-Type: application/json" \
-    -H "Authorization: Bearer $APIV2_ACCESS_TOKEN" \
-    -d '{
-          "client_id": "'$CLIENT_ID'",
-          "audience": "https://'$AUTH0_DOMAIN'/api/v2/",
-          "scope": [
-            "read:client_grants",
-            "update:client_grants",
-            "create:client_grants",
-            "delete:client_grants",
-            "read:users",
-            "create:users",
-            "delete:users",
-            "read:clients",
-            "delete:clients",
-            "create:clients",
-            "update:clients",
-            "read:connections",
-            "update:connections",
-            "delete:connections",
-            "create:connections",
-            "read:resource_servers",
-            "delete:resource_servers",
-            "create:resource_servers",
-            "read:device_credentials",
-            "delete:device_credentials",
-            "read:rules",
-            "create:rules",
-            "delete:rules",
-            "delete:email_provider",
-            "update:tenant_settings"
-          ]
-        }'
-  ```
+### Configuration
 
-1. Obtain your Global Client ID and Secret from the [Account Settings > Advanced tab](https://manage.auth0.com/#/account/advanced)
+To run the script on your machine, configuration is required that tells it what Auth0 tenant to work against as well as other information related to that tenant. To load this configuration the `reset-tenant` script will first look for a `.env` file located in the _current directory_. If one doesn't exist, it will then look for or a `.auth0-reset-tenant-env` file in your _home directory_. 
+
+Using a local `.env` file is useful when you're working on a particular project (eg. a website that uses Auth0) that's associated with a specific Auth0 tenant. You typically have a custom **recipe** script located in that same project that will be used to set up the tenant for the project. The custom recipt can be treated as code and committed to source control just like any other code file in the project.
+
+The `.auth0-reset-tenant-env` file is useful when you have a common Auth0 tenant that you use for more generic testing or demos that you want to be able to run from any directory.
+
+Regardless, the configuration file requires the following name/value pairs:
+
+```
+AUTH0_TENANT=yourtenant
+AUTH0_DOMAIN=yourtenant.auth0.com
+GLOBAL_CLIENT_ID=global-client-id
+GLOBAL_CLIENT_SECRET=global-client-secret
+API_CLIENT_ID=non-interactive-client-id
+API_CLIENT_SECRET=non-interactive-client-secret
+WEBTASK_TOKEN=your-tenant-webtask-token
+AUTHZ_EXTENSION_ID=adf6e2f2b84784b57522e3b19dfc9201
+```
+
+> `WEBTASK_TOKEN` is optional. Include it if you want the script to have access to your tenant's webtasks and extensions. To obtain the token, go to the desired tenant in the Auth0 Dashboard, then to Account Settings > [Webtasks](https://manage.auth0.com/#/account/webtasks) and copy it from the **Setup wt** step.
 
 ### Global Setup
 
-If you want to be able to run the script from _any_ directory on your machine:
+This script is not registered in `npm`, but you can install it as global command directly from this repo like this:
 
-1. Create a `.auth0-reset-tenant-env` file in your home directory and configure it as follows:  
-  ```
-  AUTH0_TENANT=yourtenant
-  AUTH0_DOMAIN=yourtenant.auth0.com
-  GLOBAL_CLIENT_ID=global-client-id
-  GLOBAL_CLIENT_SECRET=global-client-secret
-  API_CLIENT_ID=non-interactive-client-id
-  API_CLIENT_SECRET=non-interactive-client-secret
-  WEBTASK_TOKEN=your-tenant-webtask-token
-  AUTHZ_EXTENSION_ID=adf6e2f2b84784b57522e3b19dfc9201
-  ```
+```bash
+npm install -g https://github.com/auth0-extensions/auth0-reset-tenant
+```
 
-  > `WEBTASK_TOKEN` is optional. Include it if you want the script to have access to your tenant's webtasks and extensions. To obtain the token, go to the desired tenant in the Auth0 Dashboard, then to Account Settings > [Webtasks](https://manage.auth0.com/#/account/webtasks) and copy it from the **Setup wt** step.
+Alternatively if you have cloned this repo to your machine, you can install the script globally by running this command from the repo directory:
 
-1. To install the script globally, directly from this GitHub repo:  
-  ```bash
-  npm install -g https://github.com/auth0-extensions/auth0-reset-tenant
-  ```
+```bash
+npm install -g
+```
 
-1. Alternatively if you have cloned this repo to your machine, you can install the script globally by running this command from the repo directory:  
-  ```bash
-  npm install -g
-  ```
+Now as long as there's a [configuration](#configuration) file available, you can run the script with this command:
 
-1. Now you can run the script from any directory with this command:  
-  ```bash
-  reset-tenant
-  ```
+```bash
+reset-tenant
+```
 
 ### Local Setup
 
 If you want to run the script from the repo directory (eg. you are developing a new feature):
 
-1. Create a `.env` file in the repo directory, and configure it the same as the `.auth0-reset-tenant-env` file in [Global Setup](#global-setup)
-  > This step is optional if you already have a `.auth0-reset-tenant-env` file in your home directory
+1. Create a local `.env` [configuration](#configuration) file in the repo directory (or fallback to the `.auth0-reset-tenant-env` file in your home directory).
 
-1. Install dependencies, which also performs a build (see [Build](#build)):  
-  ```bash
-  npm install
-  ```
+1. Install dependencies, which also performs a build (see [Build](#build)):
 
-1. Run the script:  
-  ```bash
-  npm start
-  ```
+   ```bash
+   npm install
+   ```
+
+1. Run the script:
+  
+   ```bash
+   npm start
+   ```
 
 ### Local Development
 
