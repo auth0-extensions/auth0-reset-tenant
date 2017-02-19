@@ -5,6 +5,17 @@ import * as webtask from '../lib/webtask';
 
 export const name = 'Clear';
 export const description = 'Removes all entities from the tenant (including webtasks/extensions) and puts settings back to their defaults';
+export const managementApiClientGrantScopes = [ 
+  'update:tenant_settings', 
+  'read:client_grants', 'delete:client_grants',
+  'read:users', 'delete:users',
+  'read:clients', 'delete:clients', 'update:clients',
+  'read:connections', 'delete:connections',
+  'read:resource_servers', 'delete:resource_servers',
+  'read:device_credentials', 'delete:device_credentials',
+  'read:rules', 'delete:rules',
+  'delete:email_provider'
+];
 
 export const run = (accessTokens) => Promise.all([
   // Delete all users

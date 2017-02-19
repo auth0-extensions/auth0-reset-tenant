@@ -4,6 +4,12 @@ const DB_CONNECTION_NAME = 'Username-Password-Authentication';
 
 export const name = 'Demo: Multi-tenant Website Sample';
 export const description = 'Performs the Auth0 setup for the sample: https://github.com/auth0-samples/auth0-multitenant-website';
+export const managementApiClientGrantScopes = [ 
+  'create:clients',
+  'create:connections', 'update:connections',
+  'create:users',
+  'create:rules'
+];
 
 export const run = (accessTokens) =>
   // Create a regular web application

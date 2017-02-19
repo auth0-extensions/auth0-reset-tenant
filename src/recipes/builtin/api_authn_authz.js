@@ -5,6 +5,13 @@ const DB_CONNECTION_NAME = 'Task-Users';
 
 export const name = 'API Authentication & Authorization';
 export const description = 'Creates a SPA that uses a database connection with a single user as well as an API';
+export const managementApiClientGrantScopes = [ 
+  'update:tenant_settings', 
+  'create:clients', 
+  'create:connections', 'update:connections', 
+  'create:users', 
+  'create:resource_servers' 
+];
 
 export const run = (accessTokens) =>
   Promise.all([

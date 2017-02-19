@@ -4,6 +4,11 @@ const DB_CONNECTION_NAME = 'Sweet-App-Users';
 
 export const name = 'Regular Web App';
 export const description = 'Creates a regular web app that uses a database connection with a single user';
+export const managementApiClientGrantScopes = [ 
+  'create:clients',
+  'create:connections', 'update:connections',
+  'create:users'
+];
 
 export const run = (accessTokens) =>
   // Create a regular web application
