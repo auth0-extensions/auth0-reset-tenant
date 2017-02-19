@@ -3,7 +3,7 @@ import path from 'path';
 import os from 'os';
 
 const envFiles = [
-  path.join(__dirname, '../../.env'),
+  path.join(process.cwd(), '.env'),
   path.join(os.homedir(), '.auth0-reset-tenant-env')
 ];
 export const envFile = envFiles.find(file => fs.existsSync(file));
