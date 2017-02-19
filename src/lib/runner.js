@@ -2,14 +2,14 @@ import { tokenAudience, fetchAccessToken } from '../recipes/lib/auth0';
 
 export default (recipes, errorHandler) =>
   Promise.all([
-    fetchAccessToken(process.env.AUTH0_DOMAIN, process.env.GLOBAL_CLIENT_ID, process.env.GLOBAL_CLIENT_SECRET),
-    fetchAccessToken(process.env.AUTH0_DOMAIN, process.env.API_CLIENT_ID, process.env.API_CLIENT_SECRET, tokenAudience())
+    fetchAccessToken(process.env.RESETTENANT_AUTH0_DOMAIN, process.env.RESETTENANT_GLOBAL_CLIENT_ID, process.env.RESETTENANT_GLOBAL_CLIENT_SECRET),
+    fetchAccessToken(process.env.RESETTENANT_AUTH0_DOMAIN, process.env.RESETTENANT_NIC_CLIENT_ID, process.env.RESETTENANT_NIC_CLIENT_SECRET, tokenAudience())
   ])
     .then(tokens => {
       const accessTokens = {
         v1: tokens[0],
         v2: tokens[1],
-        webtask: process.env.WEBTASK_TOKEN
+        webtask: process.env.RESETTENANT_WEBTASK_TOKEN
       };
       console.log('Access tokens obtained.');
 

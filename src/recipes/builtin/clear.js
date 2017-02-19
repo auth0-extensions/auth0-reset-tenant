@@ -25,7 +25,7 @@ export const run = (accessTokens) => Promise.all([
   // Delete all clients except this one and the global client
   auth0.deleteEntities(
     auth0.apiManager('Client', 'client_id', '/api/v2/clients', accessTokens.v2),
-    c => c.client_id !== process.env.API_CLIENT_ID && !c.global),
+    c => c.client_id !== process.env.RESETTENANT_NIC_CLIENT_ID && !c.global),
   // Delete all connections (should remove associated users)
   auth0.deleteEntities(
     auth0.apiManager('Connection', 'id', '/api/v2/connections', accessTokens.v2)),
@@ -42,17 +42,17 @@ export const run = (accessTokens) => Promise.all([
   // Delete client grants not accociated with this client
   auth0.deleteEntities(
     auth0.apiManager('Client Grant', 'id', '/api/v2/client-grants', accessTokens.v2),
-    g => g.client_id !== process.env.API_CLIENT_ID),
+    g => g.client_id !== process.env.RESETTENANT_NIC_CLIENT_ID),
   // Delete the email provider
   request.del({
-    url: `https://${process.env.AUTH0_DOMAIN}/api/v2/emails/provider`,
+    url: `https://${process.env.RESETTENANT_AUTH0_DOMAIN}/api/v2/emails/provider`,
     auth: { bearer: accessTokens.v2 },
     json: true
   }, 'delete email provider')
     .then(() => console.log('Custom Email Provider: deleted')),
   // Reset the tenant settings
   request.patch({
-    url: `https://${process.env.AUTH0_DOMAIN}/api/v2/tenants/settings`,
+    url: `https://${process.env.RESETTENANT_AUTH0_DOMAIN}/api/v2/tenants/settings`,
     auth: { bearer: accessTokens.v2 },
     json: {
       change_password: {
@@ -85,7 +85,7 @@ export const run = (accessTokens) => Promise.all([
     .then(() => console.log('Tenant Settings: reset')),
   // Reset login page
   request.patch({
-    url: `https://${process.env.AUTH0_DOMAIN}/api/v2/clients/${process.env.GLOBAL_CLIENT_ID}`,
+    url: `https://${process.env.RESETTENANT_AUTH0_DOMAIN}/api/v2/clients/${process.env.RESETTENANT_GLOBAL_CLIENT_ID}`,
     auth: { bearer: accessTokens.v2 },
     json: {
       custom_login_page: htmlTemplate('hosted', 'login'),

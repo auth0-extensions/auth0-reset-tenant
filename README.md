@@ -27,17 +27,17 @@ The `.auth0-reset-tenant-env` file is useful when you have a common Auth0 tenant
 Regardless, the configuration file requires the following name/value pairs:
 
 ```
-AUTH0_TENANT=yourtenant
-AUTH0_DOMAIN=yourtenant.auth0.com
-GLOBAL_CLIENT_ID=global-client-id
-GLOBAL_CLIENT_SECRET=global-client-secret
-API_CLIENT_ID=non-interactive-client-id
-API_CLIENT_SECRET=non-interactive-client-secret
-WEBTASK_TOKEN=your-tenant-webtask-token
-AUTHZ_EXTENSION_ID=adf6e2f2b84784b57522e3b19dfc9201
+RESETTENANT_AUTH0_TENANT=yourtenant
+RESETTENANT_AUTH0_DOMAIN=yourtenant.auth0.com
+RESETTENANT_NIC_CLIENT_ID=non-interactive-client-id
+RESETTENANT_NIC_CLIENT_SECRET=non-interactive-client-secret
+RESETTENANT_GLOBAL_CLIENT_ID=global-client-id
+RESETTENANT_GLOBAL_CLIENT_SECRET=global-client-secret
+RESETTENANT_WEBTASK_TOKEN=your-tenant-webtask-token
+RESETTENANT_AUTHZ_EXTENSION_ID=adf6e2f2b84784b57522e3b19dfc9201
 ```
 
-> `WEBTASK_TOKEN` is optional. Include it if you want the script to have access to your tenant's webtasks and extensions. To obtain the token, go to the desired tenant in the Auth0 Dashboard, then to Account Settings > [Webtasks](https://manage.auth0.com/#/account/webtasks) and copy it from the **Setup wt** step.
+> `RESETTENANT_WEBTASK_TOKEN` is optional. Include it if you want the script to have access to your tenant's webtasks and extensions. To obtain the token, go to the desired tenant in the Auth0 Dashboard, then to Account Settings > [Webtasks](https://manage.auth0.com/#/account/webtasks) and copy it from the **Setup wt** step.
 
 ### Global Setup
 
