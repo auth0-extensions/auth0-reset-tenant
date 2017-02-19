@@ -8,7 +8,7 @@ const REQUIRED_ACCESS_TOKEN_SCOPES = [
 ];
 
 export function apiBaseUrl () {
-  return `https://${process.env.AUTH0_TENANT}.${webtaskRegion()}.webtask.io/${process.env.AUTHZ_EXTENSION_ID}/api`;
+  return `https://${process.env.RESETTENANT_AUTH0_TENANT}.${webtaskRegion()}.webtask.io/${process.env.RESETTENANT_AUTHZ_EXTENSION_ID}/api`;
 }
 
 export function tokenAudience () {
@@ -16,7 +16,7 @@ export function tokenAudience () {
 }
 
 export function fetchAccessToken (apiV2AccessToken) {
-  const baseUrl = `https://${process.env.AUTH0_DOMAIN}/api/v2/client-grants`;
+  const baseUrl = `https://${process.env.RESETTENANT_AUTH0_DOMAIN}/api/v2/client-grants`;
 
   // check to see if script client has required client grants
   return request.get({
@@ -26,14 +26,14 @@ export function fetchAccessToken (apiV2AccessToken) {
   }, 'get existing client grants')
     .then(grants => {
       const grant = grants.find(g =>
-        g.client_id === process.env.API_CLIENT_ID &&
+        g.client_id === process.env.RESETTENANT_NIC_CLIENT_ID &&
         g.audience === tokenAudience());
       if (!grant) {
         // no grant record exists - create it
         return request.post({
           url: baseUrl,
           json: {
-            client_id: process.env.API_CLIENT_ID,
+            client_id: process.env.RESETTENANT_NIC_CLIENT_ID,
             audience: tokenAudience(),
             scope: REQUIRED_ACCESS_TOKEN_SCOPES
           },
@@ -56,10 +56,10 @@ export function fetchAccessToken (apiV2AccessToken) {
       }
     })
     .then(() => request.post({
-      url: `https://${process.env.AUTH0_DOMAIN}/oauth/token`,
+      url: `https://${process.env.RESETTENANT_AUTH0_DOMAIN}/oauth/token`,
       json: {
-        client_id: process.env.API_CLIENT_ID,
-        client_secret: process.env.API_CLIENT_SECRET,
+        client_id: process.env.RESETTENANT_NIC_CLIENT_ID,
+        client_secret: process.env.RESETTENANT_NIC_CLIENT_SECRET,
         grant_type: 'client_credentials',
         audience: tokenAudience()
       }

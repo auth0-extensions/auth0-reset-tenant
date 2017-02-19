@@ -2,14 +2,14 @@ import * as request from './request';
 import querystring from 'querystring';
 
 export function webtaskRegion () {
-  const regionMatch = /^\S*\.(\S*)\.auth0\.com$/.exec(process.env.AUTH0_DOMAIN);
+  const regionMatch = /^\S*\.(\S*)\.auth0\.com$/.exec(process.env.RESETTENANT_AUTH0_DOMAIN);
   return regionMatch ? regionMatch[1] : 'us';
 }
 
 export function apiManager (entityName, idField, apiPath, accessToken, pager = getPage => getPage({})) {
   const region = webtaskRegion();
   const apiRegion = region === 'us' ? '' : `-${region}`;
-  const rootUrl = `https://sandbox${apiRegion}.it.auth0.com${apiPath}/${process.env.AUTH0_TENANT}`;
+  const rootUrl = `https://sandbox${apiRegion}.it.auth0.com${apiPath}/${process.env.RESETTENANT_AUTH0_TENANT}`;
 
   return {
     entityName,

@@ -4,6 +4,11 @@ const DB_CONNECTION_NAME = 'Sweet-App-Users';
 
 export const name = 'Regular Web App';
 export const description = 'Creates a regular web app that uses a database connection with a single user';
+export const managementApiClientGrantScopes = [ 
+  'create:clients',
+  'create:connections', 'update:connections',
+  'create:users'
+];
 
 export const run = (accessTokens) =>
   // Create a regular web application
@@ -17,7 +22,7 @@ export const run = (accessTokens) =>
       createEntity('Connection', 'id', '/api/v2/connections', accessTokens.v2, {
         name: DB_CONNECTION_NAME,
         strategy: 'auth0',
-        enabled_clients: [ client.client_id, process.env.API_CLIENT_ID ]
+        enabled_clients: [ client.client_id, process.env.RESETTENANT_NIC_CLIENT_ID ]
       })
       // Add a single user
       .then(connection =>
@@ -31,7 +36,7 @@ export const run = (accessTokens) =>
             name: 'Foo Bar'
           }
         })
-        // remove API_CLIENT_ID from the connection's enabled clients
+        // remove RESETTENANT_NIC_CLIENT_ID from the connection's enabled clients
         .then(() =>
           updateEntity('Connection', connection.id, '/api/v2/connections', accessTokens.v2, {
             enabled_clients: [ client.client_id ]

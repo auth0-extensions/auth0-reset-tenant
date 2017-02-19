@@ -3,11 +3,11 @@ import querystring from 'querystring';
 import htmlTemplate from './templates';
 
 export function domain () {
-  return process.env.AUTH0_DOMAIN;
+  return process.env.RESETTENANT_AUTH0_DOMAIN;
 }
 
 export function tokenAudience () {
-  return `https://${process.env.AUTH0_DOMAIN}/api/v2/`;
+  return `https://${process.env.RESETTENANT_AUTH0_DOMAIN}/api/v2/`;
 }
 
 export function fetchAccessToken (auth0Domain, clientId, clientSecret, audience) {
@@ -48,14 +48,14 @@ export function apiManager (entityName, idField, apiPath, accessToken, pager = g
     idField,
     getAll: () => {
       const getPage = (params) => request.get({
-        url: `https://${process.env.AUTH0_DOMAIN}${apiPath}?${querystring.stringify(params)}`,
+        url: `https://${process.env.RESETTENANT_AUTH0_DOMAIN}${apiPath}?${querystring.stringify(params)}`,
         auth: { bearer: accessToken },
         json: true
       }, `fetch ${entityName}s`);
       return pager(getPage);
     },
     delete: id => request.del({
-      url: `https://${process.env.AUTH0_DOMAIN}${apiPath}/${id}`,
+      url: `https://${process.env.RESETTENANT_AUTH0_DOMAIN}${apiPath}/${id}`,
       auth: { bearer: accessToken },
       json: true
     }, `delete ${entityName}`)
@@ -63,7 +63,7 @@ export function apiManager (entityName, idField, apiPath, accessToken, pager = g
 }
 
 export function resetEmailTemplate (type, name, accessToken, settings) {
-  const url = `https://${process.env.AUTH0_DOMAIN}/api/emails/${type}`;
+  const url = `https://${process.env.RESETTENANT_AUTH0_DOMAIN}/api/emails/${type}`;
   const auth = { bearer: accessToken };
 
   // make sure email template exists
@@ -81,7 +81,7 @@ export function resetEmailTemplate (type, name, accessToken, settings) {
           url,
           auth,
           json: Object.assign({
-            tenant: process.env.AUTH0_TENANT,
+            tenant: process.env.RESETTENANT_AUTH0_TENANT,
             from: '',
             subject: '',
             body: htmlTemplate('email', type),
@@ -95,7 +95,7 @@ export function resetEmailTemplate (type, name, accessToken, settings) {
 
 export function createEntity (entityName, idField, apiPath, accessToken, data) {
   return request.post({
-    url: `https://${process.env.AUTH0_DOMAIN}${apiPath}`,
+    url: `https://${process.env.RESETTENANT_AUTH0_DOMAIN}${apiPath}`,
     auth: { bearer: accessToken },
     json: data
   },
@@ -109,7 +109,7 @@ export function createEntity (entityName, idField, apiPath, accessToken, data) {
 
 export function updateEntity (entityName, id, apiPath, accessToken, data) {
   return request.patch({
-    url: `https://${process.env.AUTH0_DOMAIN}${apiPath}/${id}`,
+    url: `https://${process.env.RESETTENANT_AUTH0_DOMAIN}${apiPath}/${id}`,
     auth: { bearer: accessToken },
     json: data
   },
