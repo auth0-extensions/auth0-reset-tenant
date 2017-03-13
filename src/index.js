@@ -1,5 +1,5 @@
 import 'babel-polyfill';
-import { envFile } from './lib/env';
+import { configFiles } from './lib/env';
 import readline from 'readline';
 import colors from 'colors/safe';
 import pkg from '../package';
@@ -47,7 +47,7 @@ const commandLineArgs = process.argv.slice(2);
 console.log(`${colors.cyan(pkg.name)}, version ${pkg.version}`);
 console.log(pkg.description);
 console.log(`Target Auth0 domain: ${colors.yellow(process.env.RESETTENANT_AUTH0_DOMAIN)}`);
-console.log(`[.env file: ${envFile}]`);
+console.log(`[config files: ${configFiles.join(', ')}]`);
 console.log();
 
 // build strategies
